@@ -4,10 +4,10 @@ from flask_restful import Api, Resource
 app = Flask(__name__)
 api = Api(app)
 
-#FFFFFFFFFFFasd
+
 class HelloWorld(Resource):
     def get(self):
-        return "Jello"
+        return "NORTH KOREA NUMBER ONE"
 
     def post(self):
         return "Posted:"

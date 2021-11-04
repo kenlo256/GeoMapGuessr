@@ -1,22 +1,19 @@
-from flask import Flask, request
-from flask_restful import Resource, Api
+from flask import Flask
+from flask_restful import Api, Resource
 
 app = Flask(__name__)
 api = Api(app)
 
-todos = {}
 
-class TodoSimple(Resource):
-    def get(self, todo_id):
-        return {todo_id: todos[todo_id]}
+class HelloWorld(Resource):
+    def get(self):
+        return "Jello"
 
-    def put(self, todo_id):
-        todos[todo_id] = request.form['data']
-        return {todo_id: todos[todo_id]}
+    def post(self):
+        return "Posted:"
 
-api.add_resource(TodoSimple, '/<string:todo_id>')
+
+api.add_resource(HelloWorld, "/hello")
 
 if __name__ == '__main__':
-    app.run(debug=True)
-if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

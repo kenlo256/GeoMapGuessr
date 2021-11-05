@@ -1,3 +1,4 @@
+import random
 from flask import Flask
 from flask_restful import Api, Resource
 
@@ -5,15 +6,16 @@ app = Flask(__name__)
 api = Api(app)
 
 
-class HelloWorld(Resource):
+# We kinda made a fatal mistake. We can not have two APIs running on the same URI...
+
+class Coordinates(Resource):
     def get(self):
-        return "NORTH KOREA NUMBER ONE"
+        latitude = format(random.uniform(-90, 90), '.6f')
+        longitude = format(random.uniform(-180, 180), '.6f')
+        return {"latitude": latitude, "longitude": longitude}  # AMAZING API!!!! BEST API EVER!!
 
-    def post(self):
-        return "Posted:"
 
-
-api.add_resource(HelloWorld, "/hello")
+api.add_resource(Coordinates, "/hello")
 
 if __name__ == '__main__':
     app.run()

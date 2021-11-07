@@ -1,9 +1,12 @@
 from flask import Flask
 import requests
+from flask_bootstrap import Bootstrap
+
 
 app = Flask(__name__)
+Bootstrap(app)
 
-BASEKEN = "http://127.0.0.1:5000/"
+BASEKEN = "http://119.246.146.149:5000/"
 
 responseken = requests.get(BASEKEN + "/hello")
 

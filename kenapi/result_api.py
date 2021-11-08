@@ -43,8 +43,7 @@ class Result(Resource):
             result = Country(name=args['country'], counter=1)
             db.session.add(result)
         db.session.commit()
-        country = CountrySchema()
-        return country.dump(result), 201
+        return 201
 
 
 # tryout

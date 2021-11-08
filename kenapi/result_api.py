@@ -35,10 +35,9 @@ parser.add_argument('country', type=str, required=True, help='country name requi
 class Result(Resource):
     def put(self):
         args = parser.parse_args()
-        q = db.session.query(Country).filter_by(Country.name == args['country'])
+        q = db.session.query(Country).filter_by(name=args['country'])
         if q.exists():
-            result = Country.query.filter_by(name=args['country'])
-            result.counter += 1
+            q.counter += 1
         else:
             result = Country(name=args['country'], counter=1)
         db.session.add(result)

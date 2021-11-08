@@ -33,11 +33,11 @@ parser.add_argument('country', type=str, required=True, help='country name requi
 
 
 class Result(Resource):
-    def put(self, country):
+    def put(self):
         args = parser.parse_args()
-        q = Country.query(Country).filter(Country.name == country)
+        q = Country.query(Country).filter(Country.name == args['country'])
         if q.exists():
-            result = Country.query.filter_by(name=country)
+            result = Country.query.filter_by(name=args['country'])
             result.counter += 1
         else:
             result = Country(name=args['country'], counter=1)

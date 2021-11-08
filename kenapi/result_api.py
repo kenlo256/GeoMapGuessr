@@ -45,6 +45,11 @@ class Result(Resource):
         db.session.commit()
         return 201
 
+    def get(self):
+        records = Country.query.all()
+        countryschema = CountrySchema()
+        return {[countryschema.dump(record) for record in records]}
+
 
 # tryout
 

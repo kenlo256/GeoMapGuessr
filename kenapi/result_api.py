@@ -47,6 +47,7 @@ class Result(Resource):
         return country.dump(result), 201
 #tryout
 
+
 api.add_resource(Result, "/result")
 
 

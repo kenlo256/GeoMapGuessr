@@ -26,7 +26,7 @@ class CountrySchema(ma.SQLAlchemySchema):
     counter = ma.auto_field()
 
 
-db.create_all()
+#db.create_all()
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('country', type=str, required=True, help='country name required')

@@ -36,7 +36,9 @@ class Result(Resource):
     def put(self):
         args = parser.parse_args()
         if db.session.query(db.exists().where(Country.name == args['country'])).scalar():
-            db.session.query.filter_by(name=args['country']).first().counter += 1
+            db.session.query(Country)\
+                    .filter(Country.name == args['country']).\
+                    update({"counter": (Country.counter + 1)})
         else:
             result = Country(name=args['country'], counter=1)
             db.session.add(result)

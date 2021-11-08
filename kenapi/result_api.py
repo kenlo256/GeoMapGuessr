@@ -35,20 +35,20 @@ parser.add_argument('country', type=str, required=True, help='country name requi
 class Result(Resource):
     def put(self):
         args = parser.parse_args()
-        q = db.session.query(Country).filter_by(name=args['country'])
-        if q.exists():
-            q.counter += 1
+        if db.session.query(db.exists().where(Country.name == args['country'])).scalar():
+            db.session.filter_by(name=args['country']).first().counter += 1
         else:
             result = Country(name=args['country'], counter=1)
-        db.session.add(result)
+            db.session.add(result)
         db.session.commit()
         country = CountrySchema()
         return country.dump(result), 201
-#tryout
+
+
+# tryout
 
 
 api.add_resource(Result, "/result")
-
 
 if __name__ == '__main__':
     app.run()

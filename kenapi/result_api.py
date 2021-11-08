@@ -48,7 +48,7 @@ class Result(Resource):
     def get(self):
         records = Country.query.all()
         countryschema = CountrySchema()
-        return countryschema.dump(records) for record in records
+        return [countryschema.dump(records) for record in records]
 
 
 # tryout

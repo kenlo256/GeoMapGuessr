@@ -51,9 +51,6 @@ class Result(Resource):
         return [countryschema.dump(record) for record in records]
 
 
-# tryout
-
-
 api.add_resource(Result, "/result")
 
 if __name__ == '__main__':

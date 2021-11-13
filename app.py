@@ -35,7 +35,7 @@ while geocodeQuality in badGeocode:
 
 print(mapQuestGetRequest.json())
 
-# display the static map and change size=450,450 by changing the url
+# display the static map and change size=500,500 by changing the url
 
 # prompt user input from a input box from the web
 resultPutRequest = requests.put(BASE + "5001/Result")

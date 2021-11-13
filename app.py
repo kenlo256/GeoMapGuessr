@@ -5,10 +5,11 @@ from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 Bootstrap(app)
-
+# filter out list of bad location for guessing
+badGeocode = ["COUNTY", "COUNTRY", "CITY", "STATE"]
 BASE = "http://geomapguessr.me:"
 
-# GUI buttton for random function
+# GUI button for random function
 
 # python doesn't have do while loops reeeeeee
 geocodeQuality = "COUNTRY"
@@ -17,7 +18,7 @@ mapQuestGetRequest = requests.get("http://www.mapquestapi.com/geocoding/v1/rever
                                   "-55.671610,-3.914930"
                                   "&includeRoadMetadata=true&includeNearestIntersection=true");
 
-while geocodeQuality == "COUNTRY" or geocodeQuality == "CITY" or geocodeQuality == "STATE":
+while geocodeQuality in badGeocode:
     responseOmer = requests.get(BASE + "5000/hello")
     randCoordinate = responseOmer.json()
 
@@ -31,7 +32,6 @@ while geocodeQuality == "COUNTRY" or geocodeQuality == "CITY" or geocodeQuality 
 
     randResult = mapQuestGetRequest.json()
     geocodeQuality = randResult['results'][0]['locations'][0]['geocodeQuality']
-    print(geocodeQuality)
 
 print(mapQuestGetRequest.json())
 

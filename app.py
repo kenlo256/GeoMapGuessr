@@ -40,10 +40,10 @@ def rand():
         randresult = mapquestgetrequest.json()
         geocodequality = randresult['results'][0]['locations'][0]['geocodeQuality']
 
-    print(randresult)
     mapurl = randresult['results'][0]['locations'][0]['mapUrl']
-    render_template("index.html", mapurl=mapurl)
-    return redirect('/')
+    print(mapurl)
+
+    return render_template('index.html', mapurl=mapurl)
 
 
 # display the static map and change size=500,500 by changing the url

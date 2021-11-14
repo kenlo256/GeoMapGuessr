@@ -7,9 +7,7 @@
 {% endblock %}
 
 {% block staticmap %}
-    <img style="-webkit-user-select: none;
-    margin: auto;
-    background-color: hsl(0, 0%, 90%);
-    transition: background-color 300ms;
-    " src="http://www.mapquestapi.com/staticmap/v5/map?key=P6SlkwXEUSNGa2y0MdU45AXA3LADkReB&amp;type=map&amp;size=225,160&amp;locations=51.64762910852738,12.590186673468756|marker-sm-50318A-1&amp;scalebar=true&amp;zoom=15&amp;rand=-510447912">
+    <div class="text-center">
+    <img src={{ mapurl }} class="rounded">
+    </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 import requests
 from flask_bootstrap import Bootstrap
 
@@ -16,7 +16,6 @@ def home():
 
 
 # GUI button for random function
-
 # python doesn't have do while loops reeeeeee
 @app.route("/rand")
 def rand():
@@ -42,7 +41,9 @@ def rand():
         geocodequality = randresult['results'][0]['locations'][0]['geocodeQuality']
 
     print(randresult)
-    return randresult['results'][0]['locations'][0]['mapUrl']
+    mapurl = randresult['results'][0]['locations'][0]['mapUrl']
+    render_template("index.html", mapurl=mapurl)
+    return redirect('/')
 
 
 # display the static map and change size=500,500 by changing the url

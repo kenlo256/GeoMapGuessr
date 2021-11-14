@@ -40,6 +40,6 @@ print(mapQuestGetRequest.json())
 # prompt user input from a input box from the web
 resultPutRequest = requests.put(BASE + "5001/Result")
 resultGetRequest = requests.get(BASE + "5001/Result")
-
+# results display on the web
 if __name__ == '__main__':
     app.run()

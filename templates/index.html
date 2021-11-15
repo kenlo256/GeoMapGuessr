@@ -4,16 +4,17 @@
 {% block content %}
     <h1>Welcome to Geomapgusser</h1>
     <a class="btn btn-primary" href="rand" role="button">Randomize Location</a>
-    <div class="text-center">
+    <div class="position-absolute top-50 start-50 translate-middle">
     <img src={{ mapurl }} class="rounded" style="width: 500px; height: 500px;">
     </div>
-    <div class="position-relative">
+    <div class="position-absolute top-0 start-50 translate-middle-y">
     <button type="button" class="btn btn-outline-info">{{ button1 }}</button>
     <button type="button" class="btn btn-outline-info">{{ button2 }}</button>
     <button type="button" class="btn btn-outline-info">{{ button3 }}</button>
     <button type="button" class="btn btn-outline-info">{{ button4 }}</button>
     </div>
-    <table class="table">
+    <div class="position-absolute top-50 start-0 translate-middle-y">
+    <table class="table  table-dark table-hover">
     <thead>
         <tr>
             <th>name</th>
@@ -28,5 +29,6 @@
         </tr>
         {% endfor %}
     </tbody>
-</table>
+    </table>
+    </div>
 {% endblock %}

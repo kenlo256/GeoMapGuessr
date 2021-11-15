@@ -9,18 +9,15 @@ Bootstrap(app)
 # filter out list of bad location for guessing
 badGeocode = ["COUNTY", "COUNTRY", "CITY", "STATE"]
 BASE = "http://geomapguessr.me:"
-mapquest_get_request = requests.get("http://www.mapquestapi.com/geocoding/v1/reverse?"
-                                  "key=P6SlkwXEUSNGa2y0MdU45AXA3LADkReB&location="
-                                  "-55.671610,-3.914930"
-                                  "&includeRoadMetadata=true&includeNearestIntersection=true");
 
 
-def create_button():
-    abbrev = mapquest_get_request['result'][0]['locations'][0]['adminArea1']
+def create_button(abbrev):
+
     full_country_name = requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})
     # OmerAPI avoid full_country_name to get another 3 random country names
     # also randomised to order that fits in the button boxes
-    return render_template('index.html'""", button1=button1, button2=button2, button3=button3, button4=button4""")
+
+    return render_template('index.html')
 
 
 resultPutRequest = requests.put(BASE + "5001/Result")
@@ -54,10 +51,11 @@ def rand():
         rand_result = mapquest_get_request.json()
         geocode_quality = rand_result['results'][0]['locations'][0]['geocodeQuality']
 
+    abbrev = rand_result['results'][0]['locations'][0]['adminArea1']
     map_url = rand_result['results'][0]['locations'][0]['mapUrl']
-    final_url = map_url.replace("225,160", "500,500")
-    print(rand_result)
 
+    final_url = map_url.replace("225,160", "500,500")
+    create_button(abbrev)
     return render_template('index.html', mapurl=final_url)
 
 

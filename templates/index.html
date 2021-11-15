@@ -2,18 +2,20 @@
 {% block title %}This is an example page{% endblock %}
 
 {% block content %}
+    <div class="py-5 text-center">
     <h1>Welcome to Geomapgusser</h1>
     <a class="btn btn-primary" href="rand" role="button">Randomize Location</a>
-    <div class="position-absolute top-50 start-50 translate-middle">
+    </div>
+    <div class="row">
+    <div class="col-md-8 order-md-1">
     <img src={{ mapurl }} class="rounded" style="width: 500px; height: 500px;">
     </div>
-    <div class="position-absolute top-0 start-50 translate-middle-y">
+    <div class="col-md-4 order-md-1">
     <button type="button" class="btn btn-outline-info">{{ button1 }}</button>
     <button type="button" class="btn btn-outline-info">{{ button2 }}</button>
     <button type="button" class="btn btn-outline-info">{{ button3 }}</button>
     <button type="button" class="btn btn-outline-info">{{ button4 }}</button>
-    </div>
-    <div class="position-absolute top-50 start-0 translate-middle-y">
+
     <table class="table  table-dark table-hover">
     <thead>
         <tr>
@@ -30,5 +32,6 @@
         {% endfor %}
     </tbody>
     </table>
+    </div>
     </div>
 {% endblock %}

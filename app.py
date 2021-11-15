@@ -52,7 +52,7 @@ def create_button():
     full_country_name = requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})
     # OmerAPI avoid full_country_name to get another 3 random country names
     # also randomised to order that fits in the button boxes
-    render_template('index.html'""", button1=button1, button2=button2, button3=button3, button4=button4""")
+    return render_template('index.html'""", button1=button1, button2=button2, button3=button3, button4=button4""")
 
 
 resultPutRequest = requests.put(BASE + "5001/Result")

@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import Api, Resource, reqparse
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+import json
 
 app = Flask(__name__)
 api = Api(app)
@@ -17,12 +18,6 @@ class Country(db.Model):
     counter = db.Column(db.Integer)
 
 
-class AbbrevCountry(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    abbrev = db.Column(db.String(255))
-    country = db.Column(db.Integer)
-
-
 class CountrySchema(ma.SQLAlchemySchema):
     class Meta:
         model = Country
@@ -34,13 +29,17 @@ class CountrySchema(ma.SQLAlchemySchema):
 
 db.create_all()
 
-parser = reqparse.RequestParser(bundle_errors=True)
-parser.add_argument('country', type=str, required=True, help='country name required')
+parser1 = reqparse.RequestParser(bundle_errors=True)
+parser2 = reqparse.RequestParser(bundle_errors=True)
+parser1.add_argument('country', type=str, required=True, help='country name required')
+parser2.add_argument('abbrev', type=str, required=True, help='abbreviation required')
+
+countriesDB = json.loads(open('kenapi/data/en/countries.json').read())
 
 
 class Result(Resource):
     def put(self):
-        args = parser.parse_args()
+        args = parser1.parse_args()
         if db.session.query(db.exists().where(Country.name == args['country'])).scalar():
             db.session.query(Country)\
                     .filter(Country.name == args['country']).\
@@ -57,7 +56,16 @@ class Result(Resource):
         return [countryschema.dump(record) for record in records]
 
 
-api.add_resource(Result, "/result")
+class AbbrevToFullname(Resource):
+    def post(self):
+        args = parser2.parse_args()
+        for country in countriesDB:
+            if args['abbrev'].lower() == country['alpha2']:
+                return country['name']
+        return 204
 
+
+api.add_resource(Result, "/result")
+api.add_resource(AbbrevToFullname, "/AbbrevToFullname")
 if __name__ == '__main__':
     app.run()

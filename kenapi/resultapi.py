@@ -52,8 +52,8 @@ class Result(Resource):
 
     def get(self):
         records = Country.query.all()
-        countryschema = CountrySchema()
-        return [countryschema.dump(record) for record in records]
+        country_schema = CountrySchema()
+        return [country_schema.dump(record) for record in records]
 
 
 class AbbrevToFullname(Resource):

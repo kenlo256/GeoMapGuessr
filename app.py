@@ -14,9 +14,23 @@ mapquest_get_request = requests.get("http://www.mapquestapi.com/geocoding/v1/rev
                                   "-55.671610,-3.914930"
                                   "&includeRoadMetadata=true&includeNearestIntersection=true");
 
+
+def create_button():
+    abbrev = mapquest_get_request['result'][0]['locations'][0]['adminArea1']
+    full_country_name = requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})
+    # OmerAPI avoid full_country_name to get another 3 random country names
+    # also randomised to order that fits in the button boxes
+    return render_template('index.html'""", button1=button1, button2=button2, button3=button3, button4=button4""")
+
+
+resultPutRequest = requests.put(BASE + "5001/Result")
+
+resultGetRequest = requests.get(BASE + "5001/Result")
+
+
 @app.route("/")
 def home():
-    return render_template("index.html", content="Testing")
+    return render_template("index.html", content="Testing", result=resultGetRequest)
 
 
 # GUI button for random function
@@ -47,16 +61,5 @@ def rand():
     return render_template('index.html', mapurl=final_url)
 
 
-def create_button():
-    abbrev = mapquest_get_request['result'][0]['locations'][0]['adminArea1']
-    full_country_name = requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})
-    # OmerAPI avoid full_country_name to get another 3 random country names
-    # also randomised to order that fits in the button boxes
-    return render_template('index.html'""", button1=button1, button2=button2, button3=button3, button4=button4""")
-
-
-resultPutRequest = requests.put(BASE + "5001/Result")
-resultGetRequest = requests.get(BASE + "5001/Result")
-# results display on the web
 if __name__ == '__main__':
     app.run()

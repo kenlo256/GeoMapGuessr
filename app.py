@@ -42,7 +42,7 @@ def rand():
 
     mapurl = randresult['results'][0]['locations'][0]['mapUrl']
     finalurl = mapurl.replace("225,160", "500,500")
-    print(finalurl)
+    print(randresult)
 
     return render_template('index.html', mapurl=finalurl)
 

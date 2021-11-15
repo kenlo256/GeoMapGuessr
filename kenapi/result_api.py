@@ -17,6 +17,12 @@ class Country(db.Model):
     counter = db.Column(db.Integer)
 
 
+class AbbrevCountry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    abbrev = db.Column(db.String(255))
+    country = db.Column(db.Integer)
+
+
 class CountrySchema(ma.SQLAlchemySchema):
     class Meta:
         model = Country

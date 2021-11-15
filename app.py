@@ -9,6 +9,10 @@ Bootstrap(app)
 # filter out list of bad location for guessing
 badGeocode = ["COUNTY", "COUNTRY", "CITY", "STATE"]
 BASE = "http://geomapguessr.me:"
+mapquest_get_request = requests.get("http://www.mapquestapi.com/geocoding/v1/reverse?"
+                                  "key=P6SlkwXEUSNGa2y0MdU45AXA3LADkReB&location="
+                                  "-55.671610,-3.914930"
+                                  "&includeRoadMetadata=true&includeNearestIntersection=true");
 
 @app.route("/")
 def home():
@@ -19,37 +23,35 @@ def home():
 # python doesn't have do while loops reeeeeee
 @app.route("/rand")
 def rand():
-    geocodequality = "COUNTRY"
-    mapquestgetrequest = requests.get("http://www.mapquestapi.com/geocoding/v1/reverse?"
-                                  "key=P6SlkwXEUSNGa2y0MdU45AXA3LADkReB&location="
-                                  "-55.671610,-3.914930"
-                                  "&includeRoadMetadata=true&includeNearestIntersection=true");
+    geocode_quality = "COUNTRY"
 
-    while geocodequality in badGeocode:
-        responseomer = requests.get(BASE + "5000/hello")
-        randcoordinate = responseomer.json()
+    while geocode_quality in badGeocode:
+        response_omer = requests.get(BASE + "5000/hello")
+        rand_coordinate = response_omer.json()
 
-        latitude = randcoordinate['latitude']
-        longitude = randcoordinate['longitude']
+        latitude = rand_coordinate['latitude']
+        longitude = rand_coordinate['longitude']
 
-        mapquestgetrequest = requests.get("http://www.mapquestapi.com/geocoding/v1/reverse?"
+        mapquest_get_request = requests.get("http://www.mapquestapi.com/geocoding/v1/reverse?"
                                   "key=P6SlkwXEUSNGa2y0MdU45AXA3LADkReB&location="
                                   + latitude + "," + longitude +
                                   "&includeRoadMetadata=true&includeNearestIntersection=true");
 
-        randresult = mapquestgetrequest.json()
-        geocodequality = randresult['results'][0]['locations'][0]['geocodeQuality']
+        rand_result = mapquest_get_request.json()
+        geocode_quality = randresult['results'][0]['locations'][0]['geocodeQuality']
 
-    mapurl = randresult['results'][0]['locations'][0]['mapUrl']
-    finalurl = mapurl.replace("225,160", "500,500")
-    print(randresult)
+    map_url = rand_result['results'][0]['locations'][0]['mapUrl']
+    final_url = map_url.replace("225,160", "500,500")
+    print(rand_result)
 
-    return render_template('index.html', mapurl=finalurl)
+    return render_template('index.html', mapurl=final_url)
 
 
-# display the static map and change size=500,500 by changing the url
+def create_button():
+    abbrev = mapquest_get_request['result'][0]['locations'][0]['adminArea1']
+    abbrev_to_full = requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})
 
-# prompt user input from a input box from the web
+
 resultPutRequest = requests.put(BASE + "5001/Result")
 resultGetRequest = requests.get(BASE + "5001/Result")
 # results display on the web

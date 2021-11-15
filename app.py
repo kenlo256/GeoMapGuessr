@@ -20,7 +20,7 @@ def home():
 
 
 # GUI button for random function
-# python doesn't have do while loops reeeeeee
+# python doesn't have do while loops :(
 @app.route("/rand")
 def rand():
     geocode_quality = "COUNTRY"
@@ -38,7 +38,7 @@ def rand():
                                   "&includeRoadMetadata=true&includeNearestIntersection=true");
 
         rand_result = mapquest_get_request.json()
-        geocode_quality = randresult['results'][0]['locations'][0]['geocodeQuality']
+        geocode_quality = rand_result['results'][0]['locations'][0]['geocodeQuality']
 
     map_url = rand_result['results'][0]['locations'][0]['mapUrl']
     final_url = map_url.replace("225,160", "500,500")
@@ -49,7 +49,10 @@ def rand():
 
 def create_button():
     abbrev = mapquest_get_request['result'][0]['locations'][0]['adminArea1']
-    abbrev_to_full = requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})
+    full_country_name = requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})
+    # OmerAPI avoid full_country_name to get another 3 random country names
+    # also randomised to order that fits in the button boxes
+    render_template('index.html'""", button1=button1, button2=button2, button3=button3, button4=button4""")
 
 
 resultPutRequest = requests.put(BASE + "5001/Result")

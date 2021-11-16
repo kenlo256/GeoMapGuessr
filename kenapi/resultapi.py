@@ -12,12 +12,14 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 
+# mould for Country table database
 class Country(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     counter = db.Column(db.Integer)
 
 
+# create country table database
 db.create_all()
 
 
@@ -30,17 +32,20 @@ class CountrySchema(ma.SQLAlchemySchema):
     counter = ma.auto_field()
 
 
+# parse arguments for this API and give warning if none of the argument provides
 parser1 = reqparse.RequestParser(bundle_errors=True)
 parser2 = reqparse.RequestParser(bundle_errors=True)
 parser1.add_argument('country', type=str, required=True, help='country name required')
 parser2.add_argument('abbrev', type=str, required=True, help='abbreviation required')
-
+# loads from list of all countries provided by https://stefangabos.github.io/world_countries/,
+# with license.txt attached
 countriesDB = json.loads(open('kenapi/data/en/countries.json').read())
 
 
 class Result(Resource):
     def put(self):
         args = parser1.parse_args()
+        # checks if the country in the row exist if not add it to the list, if yes update the counter
         if db.session.query(db.exists().where(Country.name == args['country'])).scalar():
             db.session.query(Country)\
                     .filter(Country.name == args['country']).\

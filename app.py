@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 import random
 from flask_bootstrap import Bootstrap
@@ -9,14 +9,15 @@ Bootstrap(app)
 # filter out list of bad location for guessing
 badGeocode = ["COUNTY", "COUNTRY", "CITY", "STATE"]
 BASE = "http://geomapguessr.me:"
-
+correct_country = ""
 
 def create_button(abbrev):
+    global correct_country
     full_country_name = (requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})).json()
     other_countries = (requests.get(BASE + "5000/countriesrand", data={'name': full_country_name})).json()
-
+    correct_country = full_country_name
     list_of_countries = []
-
+    print(correct_country)
     for x in other_countries:
         list_of_countries.append(x['name'])
     list_of_countries.append(full_country_name)
@@ -25,14 +26,10 @@ def create_button(abbrev):
     return list_of_countries
 
 
-resultPutRequest = requests.put(BASE + "5001/Result")
-
-resultGetRequest = requests.get(BASE + "5001/Result")
-
-
 @app.route("/")
 def home():
-    return render_template("index.html", content="Testing", result=resultGetRequest)
+    result_get_request = requests.get(BASE + "5001/Result")
+    return render_template("index.html", content="Testing", result=result_get_request)
 
 
 # GUI button for random function
@@ -61,8 +58,18 @@ def rand():
 
     final_url = map_url.replace("225,160", "500,500")
     countries_array = create_button(abbrev)
+
     return render_template('index.html', mapurl=final_url, button1=countries_array[0], button2=countries_array[1],
                            button3=countries_array[2], button4=countries_array[3])
+
+
+@app.route("/checkbutton", methods=["POST"])
+def checkbutton():
+    if request.form['button'] == correct_country:
+        print(correct_country)
+        requests.put(BASE + "5001/Result", data={'name': correct_country})
+    result_get_request = requests.get(BASE + "5001/Result")
+    return render_template('index.html', result=result_get_request)
 
 
 if __name__ == '__main__':

@@ -16,10 +16,13 @@
     </div>
 
     <div class="col-4 col-sm-6">
-    <button type="button" class="btn btn-outline-info">{{ button1 }}</button>
-    <button type="button" class="btn btn-outline-info">{{ button2 }}</button>
-    <button type="button" class="btn btn-outline-info">{{ button3 }}</button>
-    <button type="button" class="btn btn-outline-info">{{ button4 }}</button>
+    <form action="/checkbutton" method="POST">
+        <button type="submit" class="btn btn-outline-info" id={{ button1 }} name="button" value={{ button1 }}>{{ button1 }}</button>
+        <button type="submit" class="btn btn-outline-info" id={{ button2 }} name="button" value={{ button2 }}>{{ button2 }}</button>
+        <button type="submit" class="btn btn-outline-info" id={{ button3 }} name="button" value={{ button3 }}>{{ button3 }}</button>
+        <button type="submit" class="btn btn-outline-info" id={{ button4 }} name="button" value={{ button4 }}>{{ button4 }}</button>
+    </form>
+
     <table class="table  table-dark table-hover">
     <thead>
         <tr>

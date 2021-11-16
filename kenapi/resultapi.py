@@ -55,6 +55,10 @@ class Result(Resource):
         country_schema = CountrySchema()
         return [country_schema.dump(record) for record in records]
 
+    def delete(self):
+        db.sessiondrop_table('Country')
+        return 201
+
 
 class AbbrevToFullname(Resource):
     def post(self):

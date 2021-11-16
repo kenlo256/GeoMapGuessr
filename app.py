@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template
 import requests
 import random
 from flask_bootstrap import Bootstrap
@@ -15,20 +15,17 @@ def create_button(abbrev):
     full_country_name = (requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})).json()
     other_countries = (requests.put(BASE + "5000/hello", data=full_country_name)).json()
     list_of_countries = []
+
     for x in other_countries:
         list_of_countries.append(x)
     list_of_countries.append(full_country_name)
-    for x in range(0, 10):
-        rand1 = random.randint(0, 3)
-        rand2 = random.randint(0, 3)
-        while rand1 == rand2:
-            rand2 = random.randint(0, 3)
-        list_of_countries[rand1], list_of_countries[rand2] = list_of_countries[rand2], list_of_countries[rand1]
+    random.shuffle(list_of_countries)
 
     # OmerAPI avoid full_country_name to get another 3 random country names
     # also randomised to order that fits in the button boxes
 
-    return render_template('index.html')
+    return render_template('index.html', button1=list_of_countries[0], button2=list_of_countries[1],
+                           button3=list_of_countries[2], button4=list_of_countries[3])
 
 
 resultPutRequest = requests.put(BASE + "5001/Result")

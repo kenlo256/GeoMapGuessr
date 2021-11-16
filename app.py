@@ -17,7 +17,6 @@ def create_button(abbrev):
     other_countries = (requests.get(BASE + "5000/countriesrand", data={'name': full_country_name})).json()
     correct_country = full_country_name
     list_of_countries = []
-    print(correct_country)
     for x in other_countries:
         list_of_countries.append(x['name'])
     list_of_countries.append(full_country_name)
@@ -65,7 +64,7 @@ def rand():
 
 @app.route("/checkbutton", methods=["POST"])
 def checkbutton():
-    if request.form['button'] == correct_country and correct_country is not "":
+    if request.form['button'] == correct_country:
         requests.put(BASE + "5001/result", data={'country': correct_country})
     else:
         redirect("/rand")

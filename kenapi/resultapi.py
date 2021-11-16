@@ -58,6 +58,7 @@ class Result(Resource):
 
     def delete(self):
         db.session.query(Country).delete()
+        db.session.commit()
         return 201
 
 

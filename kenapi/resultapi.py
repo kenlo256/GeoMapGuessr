@@ -57,7 +57,7 @@ class Result(Resource):
         return [country_schema.dump(record) for record in records]
 
     def delete(self):
-        db.session.query.delete()
+        db.session.query(Country).delete()
         return 201
 
 

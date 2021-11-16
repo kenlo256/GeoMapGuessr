@@ -27,8 +27,6 @@ class CountrySchema(ma.SQLAlchemySchema):
     counter = ma.auto_field()
 
 
-db.create_all()
-
 parser1 = reqparse.RequestParser(bundle_errors=True)
 parser2 = reqparse.RequestParser(bundle_errors=True)
 parser1.add_argument('country', type=str, required=True, help='country name required')
@@ -40,7 +38,6 @@ countriesDB = json.loads(open('kenapi/data/en/countries.json').read())
 class Result(Resource):
     def put(self):
         args = parser1.parse_args()
-        db.create_all()
         if db.session.query(db.exists().where(Country.name == args['country'])).scalar():
             db.session.query(Country)\
                     .filter(Country.name == args['country']).\
@@ -53,7 +50,6 @@ class Result(Resource):
 
     def get(self):
         records = Country.query.all()
-        db.create_all()
         country_schema = CountrySchema()
         return [country_schema.dump(record) for record in records]
 
@@ -74,4 +70,5 @@ class AbbrevToFullname(Resource):
 api.add_resource(Result, "/result")
 api.add_resource(AbbrevToFullname, "/AbbrevToFullname")
 if __name__ == '__main__':
+    db.create_all()
     app.run()

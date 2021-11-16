@@ -40,6 +40,7 @@ countriesDB = json.loads(open('kenapi/data/en/countries.json').read())
 class Result(Resource):
     def put(self):
         args = parser1.parse_args()
+        db.create_all()
         if db.session.query(db.exists().where(Country.name == args['country'])).scalar():
             db.session.query(Country)\
                     .filter(Country.name == args['country']).\
@@ -52,6 +53,7 @@ class Result(Resource):
 
     def get(self):
         records = Country.query.all()
+        db.create_all()
         country_schema = CountrySchema()
         return [country_schema.dump(record) for record in records]
 

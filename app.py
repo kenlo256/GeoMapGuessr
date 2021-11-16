@@ -13,19 +13,16 @@ BASE = "http://geomapguessr.me:"
 
 def create_button(abbrev):
     full_country_name = (requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})).json()
-    other_countries = (requests.put(BASE + "5000/hello", data=full_country_name)).json()
+    other_countries = (requests.get(BASE + "5000/countriesrand", data={'name': full_country_name})).json()
+
     list_of_countries = []
 
     for x in other_countries:
-        list_of_countries.append(x)
+        list_of_countries.append(x['name'])
     list_of_countries.append(full_country_name)
     random.shuffle(list_of_countries)
 
-    # OmerAPI avoid full_country_name to get another 3 random country names
-    # also randomised to order that fits in the button boxes
-
-    return render_template('index.html', button1=list_of_countries[0], button2=list_of_countries[1],
-                           button3=list_of_countries[2], button4=list_of_countries[3])
+    return list_of_countries
 
 
 resultPutRequest = requests.put(BASE + "5001/Result")
@@ -63,8 +60,9 @@ def rand():
     map_url = rand_result['results'][0]['locations'][0]['mapUrl']
 
     final_url = map_url.replace("225,160", "500,500")
-    create_button(abbrev)
-    return render_template('index.html', mapurl=final_url)
+    countries_array = create_button(abbrev)
+    return render_template('index.html', mapurl=final_url, button1=countries_array[0], button2=countries_array[1],
+                           button3=countries_array[2], button4=countries_array[3])
 
 
 if __name__ == '__main__':

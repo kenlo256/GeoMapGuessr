@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import requests
 import random
 from flask_bootstrap import Bootstrap
@@ -28,7 +28,7 @@ def create_button(abbrev):
 
 @app.route("/")
 def home():
-    result_get_request = requests.get(BASE + "5001/Result")
+    result_get_request = requests.get(BASE + "5001/result")
     return render_template("index.html", content="Testing", result=result_get_request)
 
 
@@ -66,10 +66,12 @@ def rand():
 @app.route("/checkbutton", methods=["POST"])
 def checkbutton():
     if request.form['button'] == correct_country:
-        print(correct_country)
-        requests.put(BASE + "5001/Result", data={'name': correct_country})
-    result_get_request = requests.get(BASE + "5001/Result")
-    return render_template('index.html', result=result_get_request)
+        requests.put(BASE + "5001/result", data={'country': correct_country})
+    else:
+        redirect("/rand")
+    result_get_request = requests.get(BASE + "5001/result")
+
+    return render_template('index.html', result=result_get_request.json())
 
 
 if __name__ == '__main__':

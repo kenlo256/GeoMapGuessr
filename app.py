@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for
 import requests
+import random
 from flask_bootstrap import Bootstrap
-
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -12,8 +12,19 @@ BASE = "http://geomapguessr.me:"
 
 
 def create_button(abbrev):
+    full_country_name = (requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})).json()
+    other_countries = (requests.put(BASE + "5000/hello", data=full_country_name)).json()
+    list_of_countries = []
+    for x in other_countries:
+        list_of_countries.append(x)
+    list_of_countries.append(full_country_name)
+    for x in range(0, 10):
+        rand1 = random.randint(0, 3)
+        rand2 = random.randint(0, 3)
+        while rand1 == rand2:
+            rand2 = random.randint(0, 3)
+        other_countries[rand1], other_countries[rand2] = other_countries[rand2], other_countries[rand1]
 
-    full_country_name = requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})
     # OmerAPI avoid full_country_name to get another 3 random country names
     # also randomised to order that fits in the button boxes
 
@@ -44,9 +55,9 @@ def rand():
         longitude = rand_coordinate['longitude']
 
         mapquest_get_request = requests.get("http://www.mapquestapi.com/geocoding/v1/reverse?"
-                                  "key=P6SlkwXEUSNGa2y0MdU45AXA3LADkReB&location="
-                                  + latitude + "," + longitude +
-                                  "&includeRoadMetadata=true&includeNearestIntersection=true");
+                                            "key=P6SlkwXEUSNGa2y0MdU45AXA3LADkReB&location="
+                                            + latitude + "," + longitude +
+                                            "&includeRoadMetadata=true&includeNearestIntersection=true");
 
         rand_result = mapquest_get_request.json()
         geocode_quality = rand_result['results'][0]['locations'][0]['geocodeQuality']

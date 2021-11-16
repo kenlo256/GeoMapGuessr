@@ -32,7 +32,7 @@ def home():
 
 @app.route("/reset")
 def reset():
-    requests.delete(BASE + "5002/result")
+    requests.delete(BASE + "5001/result")
     result_get_request = requests.get(BASE + "5001/result")
     return render_template("index.html", content="Testing", result=result_get_request.json())
 # GUI button for random function

@@ -68,7 +68,7 @@ def rand():
 
 @app.route("/checkbutton", methods=["POST"])
 def checkbutton():
-    if request.form['button'] == correct_country:
+    if request.form['button'] == correct_country or request.form['button'] in correct_country:
         requests.put(BASE + "5001/result", data={'country': correct_country})
     else:
         redirect("/rand")

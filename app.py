@@ -23,7 +23,7 @@ def create_button(abbrev):
         rand2 = random.randint(0, 3)
         while rand1 == rand2:
             rand2 = random.randint(0, 3)
-        other_countries[rand1], other_countries[rand2] = other_countries[rand2], other_countries[rand1]
+        list_of_countries[rand1], list_of_countries[rand2] = list_of_countries[rand2], list_of_countries[rand1]
 
     # OmerAPI avoid full_country_name to get another 3 random country names
     # also randomised to order that fits in the button boxes

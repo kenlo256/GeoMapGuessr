@@ -29,7 +29,7 @@ def create_button(abbrev):
 @app.route("/")
 def home():
     result_get_request = requests.get(BASE + "5001/result")
-    return render_template("index.html", content="Testing", result=result_get_request)
+    return render_template("index.html", content="Testing", result=result_get_request.json())
 
 
 # GUI button for random function
@@ -65,7 +65,7 @@ def rand():
 
 @app.route("/checkbutton", methods=["POST"])
 def checkbutton():
-    if request.form['button'] == correct_country:
+    if request.form['button'] == correct_country and correct_country is not "":
         requests.put(BASE + "5001/result", data={'country': correct_country})
     else:
         redirect("/rand")

@@ -16,7 +16,10 @@ class Country(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     counter = db.Column(db.Integer)
+
+
 db.create_all()
+
 
 class CountrySchema(ma.SQLAlchemySchema):
     class Meta:

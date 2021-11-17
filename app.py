@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect
 import requests
 import random
 from flask_bootstrap import Bootstrap
-
+import timeit
 app = Flask(__name__)
 Bootstrap(app)
 
@@ -12,23 +12,23 @@ badGeocode = ["COUNTY", "COUNTRY", "CITY", "STATE"]
 BASE = "http://geomapguessr.me:"
 correct_country = ""
 
-
-# after the we get the randomised location it trigger the create button location to show all the choices for countries
+# after the we get the randomised location it triggers the create button location to show all the choices for countries
 # total no. box is 4
 def create_button(abbrev):
     global correct_country
     # get the correct country name
     full_country_name = (requests.post(BASE + "5001/AbbrevToFullname", data={'abbrev': abbrev})).json()
     # get the random countries name to fill out the box choices
+
     other_countries = (requests.get(BASE + "5000/countriesrand", data={'name': full_country_name})).json()
-    # assign for later correct_country for checking with the right answer
+    # assign to correct_country so it can be checked later in the application
     correct_country = full_country_name
-    # turn arrays of randomised country with the right country and convert them to a array of string
+    # turn arrays of randomised country with the right country and converts them to an array of string
     list_of_countries = []
     for x in other_countries:
         list_of_countries.append(x['name'])
     list_of_countries.append(full_country_name)
-    # shuffle the order so the player won't can really guess the answer
+    # shuffle the order so the answer is not on the same button everytime
     random.shuffle(list_of_countries)
 
     return list_of_countries
@@ -53,16 +53,16 @@ def reset():
 def rand():
     # initialize with bad location
     geocode_quality = "COUNTRY"
-    # this loop generate randomised location until it satisfied the condition of a good guessing location
+    # this loop generates randomised a location until it satisfies the condition of a valid location
     # by avoiding bad geocode in geocode_quality, geocodeQuality is described in the external API page
     while geocode_quality in badGeocode:
-        # send a get request to Omer's web service for getting the coordinate
+        # send a get request to Omer's web service for getting the coordinates
         response_omer = requests.get(BASE + "5000/hello")
         rand_coordinate = response_omer.json()
 
         latitude = rand_coordinate['latitude']
         longitude = rand_coordinate['longitude']
-        # call external api to get the information of the randomised coordinate
+        # call external api to get the information of the randomised coordinates
         mapquest_get_request = requests.get("http://www.mapquestapi.com/geocoding/v1/reverse?"
                                             "key=P6SlkwXEUSNGa2y0MdU45AXA3LADkReB&location="
                                             + latitude + "," + longitude +
@@ -74,7 +74,7 @@ def rand():
     abbrev = rand_result['results'][0]['locations'][0]['adminArea1']
     # External API gives out map_url to be display on the web
     map_url = rand_result['results'][0]['locations'][0]['mapUrl']
-    # replace it with the resolution 500x 500 for more guessable size with more info
+    # replace it with the resolution 500 x 500 for more guessable size with more info
     final_url = map_url.replace("225,160", "500,500")
     # after that we call create button, it will output the randomised order array for list of countries
     countries_array = create_button(abbrev)
